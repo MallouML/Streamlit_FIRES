@@ -20,4 +20,3 @@ def download_all():
         else:
             print(f"{filename} existe déjà, skip.")
 
-download_datasets()
