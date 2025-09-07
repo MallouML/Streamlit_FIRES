@@ -4,6 +4,10 @@ import streamlit as st
 # TITLE, TEAM_MEMBERS and PROMOTION values in config.py.
 import config
 
+import download_datasets
+
+# Télécharge les fichiers si nécessaire
+download_datasets.download_datasets()
 
 # Define the pages
 main_page = st.Page("main_page.py", title="Bienvenue")
