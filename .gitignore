@@ -1,0 +1,11 @@
+# Ignorer les datasets volumineux
+Datasets/*.csv
+
+# Ignorer l'environnement virtuel
+streamlit_env/
+
+# Ignorer les fichiers Python temporaires
+__pycache__/
+*.pyc
+
+

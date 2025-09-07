@@ -3,6 +3,8 @@ import pandas as pd
 import plotly.express as px
 import matplotlib.pyplot as plt
 import altair as alt
+import download_datasets
+import os
 
 #streamlit run streamlit_app.py
 
@@ -11,9 +13,10 @@ import altair as alt
 st.title("Exploration des données")
 
 # Fonction pour charger les données, avec cache
+DATA_DIR = "Datasets"
 @st.cache_data
 def load_data():
-    df = pd.read_csv("/Users/mallou/Documents/Projet Data/Streamlit_fires/Streamlit/Datasets/dataset_v2.csv")
+    df = pd.read_csv(os.path.join(DATA_DIR, "dataset_v2.csv"))
     return df
 
 # Charger les données

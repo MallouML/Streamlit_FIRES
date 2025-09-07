@@ -1,4 +1,5 @@
 import streamlit as st
+import download_datasets
 #streamlit run streamlit_app.py
 
 # TITLE, TEAM_MEMBERS and PROMOTION values in config.py.
