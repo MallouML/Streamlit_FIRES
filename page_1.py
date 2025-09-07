@@ -3,17 +3,20 @@ import pandas as pd
 import missingno as msno
 import matplotlib.pyplot as plt 
 import plotly.express as px
-import download_datasets
+import download_datasets, download_all
 import os
 
 #streamlit run streamlit_app.py
 
-DATA_DIR = "Datasets"
+download_all()
 
 @st.cache_data
 def load_data():
     df1 = pd.read_csv(os.path.join(DATA_DIR, "fires.csv"))
     df2 = pd.read_csv(os.path.join(DATA_DIR, "US_wildfire_weather_data.csv"))
+
+    df1 = pd.read_csv(df1_path)
+    df2 = pd.read_csv(df2_path)
     return df1, df2
 
 # Charger les données
