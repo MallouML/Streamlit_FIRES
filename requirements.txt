@@ -1,0 +1,13 @@
+streamlit
+pandas
+numpy
+missingno 
+matplotlib
+plotly
+altair
+Pillow
+joblib
+folium
+streamlit-folium
+scikit-learn==1.6.1
+category_encoders

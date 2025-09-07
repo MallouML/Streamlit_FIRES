@@ -1,0 +1,13 @@
+{
+    "terminal.integrated.profiles.osx": {
+        "zsh": {
+            "path": "zsh"
+        }
+    },
+    "terminal.integrated.defaultProfile.osx": "zsh",
+    "terminal.integrated.env.osx": {
+        "VIRTUAL_ENV": "${workspaceFolder}/streamlit_env",
+        "PATH": "${workspaceFolder}/streamlit_env/bin:${env:PATH}"
+    },
+    "python.defaultInterpreterPath": "${workspaceFolder}/streamlit_env/bin/python"
+}
