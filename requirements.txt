@@ -11,3 +11,4 @@ folium
 streamlit-folium
 scikit-learn==1.6.1
 category_encoders
+gdown
