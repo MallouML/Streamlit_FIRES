@@ -6,7 +6,7 @@ import altair as alt
 import download_datasets import load_data
 import os
 
-#streamlit run streamlit_app.py
+download_datasets.download_datasets()
 
 
 # Visualisation des données PAGE
