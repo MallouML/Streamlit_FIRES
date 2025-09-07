@@ -1,22 +1,21 @@
-from download_datasets import DATA_DIR, datasets
-import pandas as pd
 import os
-import streamlit as st
+import gdown
 
-# Téléchargement automatique des datasets
-for filename, url in datasets.items():
-    filepath = os.path.join(DATA_DIR, filename)
-    if not os.path.exists(filepath):
-        st.write(f"Téléchargement de {filename}...")
-        import gdown
-        gdown.download(url, filepath, quiet=False)
-        st.write(f"{filename} téléchargé !")
-    else:
-        st.write(f"{filename} existe déjà, skip.")
+DATA_DIR = "Datasets"
+os.makedirs(DATA_DIR, exist_ok=True)
 
-# Charger les CSV
-df_fires = pd.read_csv(os.path.join(DATA_DIR, "fires.csv"))
-df_weather = pd.read_csv(os.path.join(DATA_DIR, "US_wildfire_weather_data.csv"))
-df_v2 = pd.read_csv(os.path.join(DATA_DIR, "dataset_v2.csv"))
+datasets = {
+    "US_wildfire_weather_data.csv": "https://drive.google.com/uc?id=ID1",
+    "fires.csv": "https://drive.google.com/uc?id=ID2",
+    "dataset_v2.csv": "https://drive.google.com/uc?id=ID3"
+}
 
-st.write("Datasets chargés !")
+def download_all():
+    for filename, url in datasets.items():
+        filepath = os.path.join(DATA_DIR, filename)
+        if not os.path.exists(filepath):
+            print(f"Téléchargement de {filename}...")
+            gdown.download(url, filepath, quiet=False)
+            print(f"{filename} téléchargé !")
+        else:
+            print(f"{filename} existe déjà, skip.")
