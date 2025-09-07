@@ -3,8 +3,21 @@ import pandas as pd
 import missingno as msno
 import matplotlib.pyplot as plt 
 import plotly.express as px
+import download_datasets
+import os
 
 #streamlit run streamlit_app.py
+
+DATA_DIR = "Datasets"
+
+@st.cache_data
+def load_data():
+    df1 = pd.read_csv(os.path.join(DATA_DIR, "fires.csv"))
+    df2 = pd.read_csv(os.path.join(DATA_DIR, "US_wildfire_weather_data.csv"))
+    return df1, df2
+
+# Charger les données
+df1, df2 = load_data()
 
 # Exploration des données PAGE
 st.title("Présentation des données")
@@ -15,17 +28,7 @@ st.title("Présentation des données")
 st.header("Présentation des datasets")
 st.markdown("Vous trouverez ci-dessous les 2 datasets")
 
-# Datasets
-# Fonction pour charger les données, avec cache
-@st.cache_data
-def load_data():
-    df1 = pd.read_csv('/Users/mallou/Documents/Projet Data/Streamlit_fires/Streamlit/Datasets/fires.csv')
-    df2 = pd.read_csv('/Users/mallou/Documents/Projet Data/Streamlit_fires/Streamlit/Datasets/US_wildfire_weather_data.cvs')
-    #df3 = pd.read_csv("/Users/mallou/Documents/Projet Data/Feux_USA/Datasets/external/df_pop.csv")
-    return df1, df2
 
-# Charger les données
-df1, df2 = load_data()
 
 # Création des onglets datasets
 #a, b, c = st.tabs(["Dataset principal", "Dataset météorologiques", "Dataset population"])
