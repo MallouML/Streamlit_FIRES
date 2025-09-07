@@ -19,3 +19,5 @@ def download_all():
             print(f"{filename} téléchargé !")
         else:
             print(f"{filename} existe déjà, skip.")
+
+download_datasets()
