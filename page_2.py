@@ -3,7 +3,7 @@ import pandas as pd
 import plotly.express as px
 import matplotlib.pyplot as plt
 import altair as alt
-import download_datasets
+import download_datasets import load_data
 import os
 
 #streamlit run streamlit_app.py
