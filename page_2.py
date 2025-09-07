@@ -36,13 +36,6 @@ st.markdown("Dans cette partie, nous allons balayer la représentation des feux 
 #Graphique 1 : Maps des feux aux USA
 st.subheader("**1- Carte des feux aux États-Unis entre 1992 et 2015**")
 
-# Renommer pour st.map
-df = df.rename(columns={"LATITUDE": "latitude", "LONGITUDE": "longitude"})
-
-# Convertir en float si nécessaire
-df["latitude"] = df["latitude"].astype(float)
-df["longitude"] = df["longitude"].astype(float)
-
 df = pd.DataFrame(df)
 st.map(df)
 
