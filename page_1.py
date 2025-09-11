@@ -4,6 +4,7 @@ import missingno as msno
 import matplotlib.pyplot as plt 
 import plotly.express as px
 import os
+from utils import load_data
 
 # Charger les données
 df1, df2 = load_data()
