@@ -1,9 +1,9 @@
 import streamlit as st
 import pandas as pd
 from PIL import Image
-import download_datasets
 
-#streamlit run streamlit_app.py
+
+#/Users/mallou/Documents/Projet\ Data/Feux_USA/.conda/bin/streamlit run "/Users/mallou/Documents/Projet Data/Feux_USA/Streamlit_projet/Streamlit/streamlit_app.py"
 
 
 # Visualisation des données PAGE
@@ -12,226 +12,76 @@ st.title("Présentation du modèle de prédiction")
 # Fonction pour charger les données, avec cache
 @st.cache_data
 def load_data():
-    df = pd.read_csv("/Users/mallou/Documents/Projet Data/Streamlit_fires/Streamlit/Datasets/dataset_v2.csv")
+    df = pd.read_csv("/Users/mallou/Documents/Projet Data/Feux_USA/Notebooks/Suppression categorieA/dataset_v2.csv")
     return df
 
 # Charger les données
 df = load_data()
 
+#----------------------------------------------------
 #1er paragraphe
-st.header("1- Choix des variables")
+#----------------------------------------------------
+st.header("1- Objectif")
 
-st.markdown("À partir du dataset concaténer avec les données météorologiques")
-st.markdown("- Valeurs manquantes trop importantes \n"
-            "- Valeurs de l'attributs non nécessaires pour la modélisation")
-st.markdown("Pour la création du modèle de Machine Learning, nous décidons d'enlever la catégorie A de la variable cible. "
-            "Sur ce projet, la classe A et B sont les classes très majoritaires et pour répondre à notre besoin, nous faisons ce choix.")
+st.subheader("**Créer un modèle capable de prédire les grands feux.**")
 
-st.code("""#Garder que les variables qui nous intéressent
-df[['STATE', 'LONGITUDE', 'OWNER_DESCR', 'REGION',
-        'Climat', 'CAUSES_GROUP', 'LATITUDE', 'Type_1', 'SIZE_ENCODED']]"""
-, line_numbers=True)
-
-#2e paragraphe : Train/Test/Split
-st.header("2- Train/Test/Split")
-st.code("""#Séparation de la variable cible
-data = df.drop(columns = ['FIRE_SIZE', 'FIRE_SIZE_CLASS', 'DISCOVERY_DATE', 'DISCOVERY_TIME', 'STAT_CAUSE_DESCR', 'SIZE_ENCODED', 'OBJECTID'])
-target = df['SIZE_ENCODED']
-
-#Séparation test à 20%
-X_train, X_test, y_train, y_test = train_test_split(data, target, random_state = 42, test_size = 0.2)
-
-# Important : réaligner les index
-y_train = y_train.set_axis(X_train.index)
-y_test = y_test.set_axis(X_test.index)
-
-#Séparation des variables catégorielles et numériques 
-num_train = X_train.select_dtypes(include = 'number')
-num_test = X_test.select_dtypes(include = 'number')
-cat_train = X_train.select_dtypes(exclude = 'number')
-cat_test = X_test.select_dtypes(exclude = 'number')""", line_numbers=True)
-
-#3e paragraphe : 
-st.header("3- Imputation valeurs manquantes")
-
-st.code("""#Valeurs manquantes
-#variables numériques - Choix d'imputer par la médiane
-num_imputer = SimpleImputer(missing_values = np.nan,
-                           strategy = 'median')
-
-num_train_imputed = pd.DataFrame(num_imputer.fit_transform(num_train),
-                                columns = ['FIRE_YEAR', 'DISCOVERY_DOY', 'LATITUDE',
-                                           'LONGITUDE', 'temp_mean_0', 'prcp_sum_0', 'wspd_mean_0', 'temp_mean_10',
-                                           'prcp_sum_10', 'wspd_mean_10', 'temp_mean_30', 'prcp_sum_30',
-                                           'wspd_mean_20', 'temp_mean_60', 'prcp_sum_60', 'wspd_mean_60',
-                                           'temp_mean_180', 'prcp_sum_180', 'wspd_mean_180', 'YEAR', 'MONTH','DAY', 'WEEKDAY'],
-                                index = num_train.index)
-
-num_test_imputed = pd.DataFrame(num_imputer.transform(num_test),
-                                columns = ['FIRE_YEAR', 'DISCOVERY_DOY', 'LATITUDE',
-                                           'LONGITUDE', 'temp_mean_0', 'prcp_sum_0', 'wspd_mean_0', 'temp_mean_10',
-                                           'prcp_sum_10', 'wspd_mean_10', 'temp_mean_30', 'prcp_sum_30',
-                                           'wspd_mean_20', 'temp_mean_60', 'prcp_sum_60', 'wspd_mean_60',
-                                           'temp_mean_180', 'prcp_sum_180', 'wspd_mean_180', 'YEAR', 'MONTH','DAY', 'WEEKDAY'],
-                                index = num_test.index)
-
-""", line_numbers=True)
-
-
-
-# #4e paragraphe : Encodage variable cible
-st.header("4- Encodage variable cible")
-st.code("""#Encodage variable cible
-codage = {'small': 0, 'medium': 1, 'very_large': 2}
-
-y_train_encoded = y_train.map(codage)
-y_test_encoded = y_test.map(codage)
-""", line_numbers=True)
-
-# #5e paragraphe : Encodage variables catégorielles
-st.header("5- Encodage variables catégorielles")
-st.code("""
-#Variables catégorielles ordinales
-# Colonnes ordinales
-ordinal_cols = ['SAISON', 'PERIODE_DAY', 'DAY_NAME']
-
-# Ordre défini
-saison_order = ['Hiver', 'Printemps', 'Été', 'Automne']
-periode_order = ['Matin Tôt', 'Matinée', 'Après-Midi', 'Soirée', 'Nuit']
-day_order = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
-
-# Instanciation de l'encodeur
-ord_enc = OrdinalEncoder(categories=[saison_order, periode_order, day_order])
-
-# Fit sur le train
-ord_enc.fit(cat_train[ordinal_cols])
-
-# Transformation
-ord_train = pd.DataFrame(
-    ord_enc.transform(cat_train[ordinal_cols]),
-    columns=ordinal_cols,
-    index=cat_train.index
+st.markdown("Ici, les grands feux représentent les classes minoritaires de la variable **FIRE_SIZE_CLASS** (F et G).\n\n"
+            
+            "- Pour améliorer les résultats du modèle, nous supprimons la classe A de la variable cible. (FIRE_SIZE_CLASS)\n\n"
+            "- Nous regroupons les classes comme suit : \n\n"
+            "   **Classe B** = 'small'\n\n"
+            "   **Classes C et D** = 'medium'\n\n"
+            "   **Classes E, F et G** = 'very_large'\n\n"
+            
+            "La classe E est rajoutée, pour essayer d'équilibrer les classes pour le modèle."
+            
 )
 
-ord_test = pd.DataFrame(
-    ord_enc.transform(cat_test[ordinal_cols]),
-    columns=ordinal_cols,
-    index=cat_test.index
+
+
+#----------------------------------------------------
+#2e paragraphe : Suppression des variables
+#----------------------------------------------------
+st.header("2- Suppression des variables")
+
+st.markdown("À partir du dataset principal concaténé avec les données météorologiques.")
+
+st.markdown("- Variables avec des valeurs manquantes trop importantes \n"
+            "- Variables non-nécessaires pour la modélisation \n"
+            "- Doublons : Nouvelles variables créées à partir des variables originales")
+
+#----------------------------------------------------
+#3e paragraphe : Preprocessing
+#----------------------------------------------------
+st.header("3- Preprocessing")
+
+st.markdown(f"Après le **'Test/Train/Split'** : ")
+
+#Encodage variable cible
+st.markdown("### Encodage de la variable cible")
+st.markdown("La variable cible est répartie en 3 catégories : \n\n"
+            "**'small'** : 0 (Catégorie B) \n\n"
+            "**'medium'** : 1, (Catégories C et D) \n\n"
+            "**'very_large'** : 2 (Catégories E, F et G) \n\n")
+
+#Imputation valeurs manquantes
+st.markdown("### Imputation sur les valeurs manquantes")
+st.markdown("Concerne seulement les variables météorologiques. Entre 2 et 16% de valeurs manquantes")
+
+#Encodage variables catégorielles
+st.markdown("### Encodage des variables catégorielles")
+st.markdown("**Variables catégorielles ordinales** : Utilisation d'OrdinalEncoder \n\n"
+            "**Variables catégorielles nominales (forte cardinalité)** : Utilisation de TargetEncoder \n\n"
+            "**Variables catégorielles nominales (faible cardinalité)** : Utilisation de OneHotEncoder \n\n"
 )
 
-#Variables catégorielles nominales
-from category_encoders import TargetEncoder
-# Séparation des colonnes
-target_encode_cols = ['STATE', 'REGION', 'OWNER_DESCR', 'Type_1', 'Climat']
-
-# Instanciation de TargetEncoder
-target_encoder = TargetEncoder()
-
-# On entraîne le modèle sur le jeu d'entraînement
-target_encoder.fit(cat_train[target_encode_cols], y_train_encoded)
-
-# On applique sur train & test
-target_train = pd.DataFrame(target_encoder.transform(cat_train[target_encode_cols]),
-                            columns = target_encode_cols,
-                            index = cat_train.index)
-
-target_test = pd.DataFrame(target_encoder.transform(cat_test[target_encode_cols]),
-                           columns = target_encode_cols,
-                           index = cat_test.index)
-                           
-#Variable catégorielle nominale (peu de modalités)                            
-from sklearn.preprocessing import OneHotEncoder
-
-ohe = OneHotEncoder(sparse_output=False, drop='first')
-
-ohe.fit(cat_train[['CAUSES_GROUP']])
-
-# On applique sur train & test
-ohe_train = pd.DataFrame(ohe.transform(cat_train[['CAUSES_GROUP']]),
-                            columns = ohe.get_feature_names_out(['CAUSES_GROUP']),
-                            index = cat_train.index)
-
-ohe_test = pd.DataFrame(ohe.transform(cat_test[['CAUSES_GROUP']]),
-                           columns = ohe.get_feature_names_out(['CAUSES_GROUP']),
-                           index = cat_test.index)
-
-#df variables catégorielles
-cat_train_encoded = pd.concat([ord_train, target_train, ohe_train], axis=1)
-cat_test_encoded = pd.concat([ord_test, target_test, ohe_test], axis=1)
-
-#concatenation
-X_train_arbre = pd.concat([num_train_imputed, cat_train_encoded], axis = 1)
-X_test_arbre = pd.concat([num_test_imputed, cat_test_encoded], axis = 1)
-""", line_numbers=True)
-
-
-# #6e paragraphe : Modèle Random Forest
-st.header("6- Modèle & Hyperparamètres")
-st.markdown("Après un premier test et une recherche d'hyperparamètres, nous obtenons : ")
-st.markdown("#### **La recherche d'hyperparamètres :**")
-st.code("""from sklearn.model_selection import GridSearchCV
-
-clf_rf = RandomForestClassifier(criterion = 'gini', random_state=42)
-
-param_grid_rf = {'n_estimators': [100, 150],
-                 'max_depth': [10, 15, 20],
-                 'min_samples_split': [5, 8, 10],
-                 'min_samples_leaf': [1, 5, 10],
-                 'max_features': ['sqrt'],
-                 'class_weight': ['balanced', {0:1, 1:3, 2:10}]
-}
-
-clf_rf_final = GridSearchCV(
-    estimator=clf_rf,                  
-    param_grid=param_grid_rf,          
-    cv=3,                              
-    scoring='f1_macro',             
-    n_jobs=-1,
-    refit=True,
-    return_train_score=True
-)
-
-clf_rf_final.fit(X_train_arbre, y_train_encoded)
-print(clf_rf_final.best_params_)
-""", line_numbers=True)
-
-st.markdown("#### **Et le modèle :**")
-st.code("""#Instanciation du modèle
-rf2 = RandomForestClassifier(max_depth= 20, 
-                            max_features =  'sqrt', 
-                            min_samples_split= 5,
-                            min_samples_leaf=10,
-                            n_estimators= 150,
-                            class_weight={0:1, 1:3, 2:10},
-                            criterion = 'gini', 
-                            random_state=42,
-                            ccp_alpha=0.001
-                            )
-
-#Entraînement du modèle
-rf2.fit(X_train_arbre, y_train_encoded)
-
-print("Score sur ensemble Train : ", rf2.score(X_train_arbre, y_train_encoded))
-print("Score sur ensemble Test : ", rf2.score(X_test_arbre, y_test_encoded))
-
-# Évaluation du modèle
-from sklearn.metrics import classification_report
-
-y_pred_rf2= rf2.predict(X_test_arbre)
-display(pd.crosstab(y_test_encoded, y_pred_rf2, rownames = ['Classes réelles'], colnames = ['Classes prédites']))
-
-print(classification_report(y_test_encoded, y_pred_rf2))
-
-#Importances de chaques variables explicatives
-
-feat_importances_arbre = pd.DataFrame(rf2.feature_importances_,
-                                      index = X_test_arbre.columns,
-                                      columns = ['Importances'])
-
-feat_importances_arbre.sort_values(by = 'Importances', ascending = False, inplace = True)
-
-feat_importances_arbre.plot(kind = 'bar', figsize = (10,8))
-""", line_numbers=True)
+#----------------------------------------------------
+# #4e paragraphe : Modèle Random Forest
+#----------------------------------------------------
+st.header("4- Modèle & Hyperparamètres")
+st.markdown("Après un premier modèle sans paramètre, on effectue une recherche d'hyperparamètres. \n\n"
+            "Et ensuite on crée le modèle à l'aide des paramètres trouvés.")
+st.subheader("Résultat du 1er modèle avec toutes les variables : ")
 
 #Résultats
 st.write("**Score sur ensemble Train :**  0.634431384747863 \n\n"
@@ -285,43 +135,16 @@ st.image(image, use_container_width=True)
 #-------------------------------------
 # Sélection 8 variables
 #-------------------------------------
-st.header("7- Modèle avec 8 variables")
+st.header("5- Modèle avec 8 variables sélectionnées")
 
 st.markdown("Nous gardons les 8 variables les plus importantes après la création du premier modèle.")
+
 st.markdown("#### **Modèle final :**")
-st.code("""
-        
-X_train_arbre8 = X_train_arbre[['STATE', 'LONGITUDE', 'OWNER_DESCR', 'REGION', 'Climat', 'LATITUDE', 'CAUSES_GROUP_Naturel', 'Type_1']]
-X_test_arbre8 = X_test_arbre[['STATE', 'LONGITUDE', 'OWNER_DESCR', 'REGION', 'Climat', 'LATITUDE', 'CAUSES_GROUP_Naturel', 'Type_1']]
-
-#Instanciation du modèle
-rf_bi = RandomForestClassifier(max_depth= 20, 
-                            max_features =  'sqrt', 
-                            min_samples_split= 5,
-                            min_samples_leaf=10,
-                            n_estimators= 150,
-                            class_weight={0:1, 1:3, 2:10},
-                            criterion = 'gini', 
-                            random_state=42,
-                            ccp_alpha=0.001
-                            )
-
-#Entraînement du modèle
-rf_bi.fit(X_train_arbre8, y_train_encoded)
-""" )
 
 #Résultats
 st.write("**Score sur ensemble Train :**  0.642138105003806 \n\n"
 "**Score sur ensemble Test :**  0.6421793820634417")
 
-st.code("""
-# Évaluation du modèle
-
-y_pred_clf_bi= rf_bi.predict(X_test_arbre8)
-display(pd.crosstab(y_test_encoded, y_pred_clf_bi, rownames = ['Classes réelles'], colnames = ['Classes prédites']))
-
-print(classification_report(y_test_encoded, y_pred_clf_bi))
-""")
 
 # Matrice de confusion en DataFrame
 conf_matrix = pd.DataFrame(
@@ -353,8 +176,10 @@ index_labels = [
     "Weighted avg"
 ]
 
-df_report = pd.DataFrame(report_data2, index=index_labels)
-
+df_report2 = pd.DataFrame(report_data2, index=index_labels)
+# Affichage dans Streamlit
+st.write("### Rapport de classification")
+st.write(df_report2)
 
 # Charger l'image depuis le disque
 image2 = Image.open("/Users/mallou/Documents/Projet Data/Feux_USA/PDF/output2.png")
@@ -363,7 +188,8 @@ image2 = Image.open("/Users/mallou/Documents/Projet Data/Feux_USA/PDF/output2.pn
 st.write("### Importance des variables")
 st.image(image2, use_container_width=True)
 
-
+st.write("Nous constatons, très peu d'amélioration de la performance du modèle. "
+         "Seulement, dans **la matrice confusion**, un gain de 192 observations de plus détecté par le modèle pour la catégorie 'very_large'.")
 
 
 
