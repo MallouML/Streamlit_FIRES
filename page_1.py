@@ -3,6 +3,8 @@ import pandas as pd
 import missingno as msno
 import matplotlib.pyplot as plt 
 import plotly.express as px
+from utils import load_csv
+
 
 df1, df2 = load_data()
 
