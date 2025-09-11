@@ -32,13 +32,23 @@ def download_all():
     for filename in datasets:
         download_dataset(filename)
 
-def load_csv(filename: str, **kwargs):
+def load_csv(filename: str, low_memory=True, **kwargs):
     """Charge un CSV depuis le dossier DATA_DIR"""
     filepath = os.path.join(DATA_DIR, filename)
     if not os.path.exists(filepath):
         download_dataset(filename)
-    return pd.read_csv(filepath, **kwargs)
+    return pd.read_csv(filepath, low_memory=low_memory, **kwargs)
 
-def load_data(filename: str, **kwargs):
+def load_data(filename: str, low_memory=True, **kwargs):
     """Alias pour load_csv pour compatibilité avec l'ancien code"""
-    return load_csv(filename, **kwargs)
+    return load_csv(filename, low_memory=low_memory, **kwargs)
+
+def load_all(low_memory=True):
+    """
+    Charge tous les datasets et retourne les DataFrames
+    Usage : df1, df2, df3 = load_all()
+    """
+    df1 = load_data("US_wildfire_weather_data.csv", low_memory=low_memory)
+    df2 = load_data("fires.csv", low_memory=low_memory)
+    df3 = load_data("dataset_v2.csv", low_memory=low_memory)
+    return df1, df2, df3
