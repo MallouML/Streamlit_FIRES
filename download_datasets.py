@@ -1,8 +1,12 @@
 import os
 import gdown
+import pandas as pd
 
-DATA_DIR = "Datasets"
-os.makedirs(DATA_DIR, exist_ok=True)
+BASE_DIR = os.path.join(os.path.dirname(__file__), "Datasets")
+
+df1 = pd.read_csv(os.path.join(BASE_DIR, "fires.csv"))
+df2 = pd.read_csv(os.path.join(BASE_DIR, "US_wildfire_weather_data.csv"))
+
 
 datasets = {
     "US_wildfire_weather_data.cvs": "1FfGg56InKnFMUcF8WFGQcFjWUMCB7dVY",
