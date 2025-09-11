@@ -3,10 +3,18 @@ import pandas as pd
 import missingno as msno
 import matplotlib.pyplot as plt 
 import plotly.express as px
-import os
-from download_datasets import load_data
 
-# Charger les données
+# URL publique du dataset Kaggle
+URL_FIRES = "https://www.kaggleusercontent.com/.../fires.csv"
+URL_WEATHER = "https://www.kaggleusercontent.com/.../US_wildfire_weather_data.csv"
+
+# Charger directement depuis l'URL
+@st.cache_data
+def load_data():
+    df1 = pd.read_csv(URL_FIRES)
+    df2 = pd.read_csv(URL_WEATHER)
+    return df1, df2
+
 df1, df2 = load_data()
 
 
