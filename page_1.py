@@ -7,10 +7,11 @@ from utils import load_data
 
 
 def load_all():
-    df1 = load_data("US_wildfire_weather_data.csv")
-    df2 = load_data("fires.csv")
-    df3 = load_data("dataset_v2.csv")
+    df1 = load_data("US_wildfire_weather_data.csv", low_memory=False)
+    df2 = load_data("fires.csv", low_memory=False)
+    df3 = load_data("dataset_v2.csv", low_memory=False)
     return df1, df2, df3
+    
 df1, df2, df3 = load_all()
 
 
