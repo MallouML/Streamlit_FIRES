@@ -5,17 +5,6 @@ import matplotlib.pyplot as plt
 import plotly.express as px
 import os
 
-
-
-#streamlit run streamlit_app.py
-
-@st.cache_data
-def load_data():
-    base_path = os.path.join(os.path.dirname(__file__), "Datasets")
-    df1 = pd.read_csv(os.path.join(base_path, "fires.csv"))
-    df2 = pd.read_csv(os.path.join(base_path, "US_wildfire_weather_data.cvs"))
-    return df1, df2
-
 # Charger les données
 df1, df2 = load_data()
 
