@@ -38,3 +38,7 @@ def load_csv(filename: str, **kwargs):
     if not os.path.exists(filepath):
         download_dataset(filename)
     return pd.read_csv(filepath, **kwargs)
+
+def load_data(filename: str, **kwargs):
+    """Alias pour load_csv pour compatibilité avec l'ancien code"""
+    return load_csv(filename, **kwargs)
