@@ -3,20 +3,18 @@ import pandas as pd
 import plotly.express as px
 import matplotlib.pyplot as plt
 import altair as alt
-import download_datasets import load_data
 import os
-
-download_datasets.download_datasets()
+#streamlit run streamlit_app.py
 
 
 # Visualisation des données PAGE
 st.title("Exploration des données")
 
 # Fonction pour charger les données, avec cache
-DATA_DIR = "Datasets"
 @st.cache_data
 def load_data():
-    df = pd.read_csv(os.path.join(DATA_DIR, "dataset_v2.csv"))
+    base_path = os.path.join(os.path.dirname(__file__), "Datasets")
+    df = pd.read_csv(os.path.join(base_path, "dataset_v2.csv"))
     return df
 
 # Charger les données
@@ -25,7 +23,7 @@ df = load_data()
 #--------------------------------------------------------------
 #Introduction
 #--------------------------------------------------------------
-st.markdown("Cette étape dans un projet data, est une étape essentielle pour comprendre la nature du dataset.")
+st.markdown("Cette étape dans un projet data, est une étape essentielle pour comprendre la nature du jeu de données.")
 
 #--------------------------------------------------------------
 #1er paragraphe : Vue d'ensemble des feux
@@ -35,7 +33,6 @@ st.markdown("Dans cette partie, nous allons balayer la représentation des feux 
 
 #Graphique 1 : Maps des feux aux USA
 st.subheader("**1- Carte des feux aux États-Unis entre 1992 et 2015**")
-
 df = pd.DataFrame(df)
 st.map(df)
 
@@ -82,8 +79,8 @@ st.altair_chart(chart)
 # Graphique 3 :Les années 2006, 2000, 2007 et 2011
 #--------------------------------------------------------------
 st.markdown("#### Plus en détail :")
-st.markdown("Catégories des feux pour 2006, 2000, 2007, 2011.\n\n "
-            "Une très grande domination des feux de la classe A et B, qui correspondent aux feux de taille."
+st.markdown("Catégories des feux pour les années 2006, 2000, 2007, 2011.\n\n "
+            "Une très grande domination des feux de la classe A et B, qui correspondent aux feux de taille :"
             "\n\n"
             "- A = entre 0 et 0.25 acres (0 à 1 000 m²)" 
             "\n\n"
@@ -115,7 +112,7 @@ st.altair_chart(chart)
 # Graphique 4 : Les États sur 23 ans
 #--------------------------------------------------------------
 st.subheader("**3- Les États touchés en nombre d'incendies**")
-st.markdown("Après avoir comptabilisé, nous regardons quels sont les États les plus touchés en nombre durant la période de 1992 à 2015.")
+st.markdown("Après un aperçu des incendies dans l'ensemble du pays, nous regardons quels sont les États les plus touchés en nombre durant la période de 1992 à 2015.")
 
 # Compter les feux par État
 feux_par_etat = df['STATE'].value_counts()
