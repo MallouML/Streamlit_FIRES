@@ -5,7 +5,7 @@ DATA_DIR = "Datasets"
 os.makedirs(DATA_DIR, exist_ok=True)
 
 datasets = {
-    "US_wildfire_weather_data.csv": "1FfGg56InKnFMUcF8WFGQcFjWUMCB7dVY",
+    "US_wildfire_weather_data.cvs": "1FfGg56InKnFMUcF8WFGQcFjWUMCB7dVY",
     "fires.csv": "1IhF1oK34yVs-gxsh8et8DsNHwOI5FZDc",
     "dataset_v2.csv": "1FXfZQpwLOX-3qoh0d2r1IiapZrr4y7NS"
 }
