@@ -1,7 +1,8 @@
 import streamlit as st
 import pandas as pd
 import plotly.express as px 
-import download_datasets
+import os
+
 #streamlit run streamlit_app.py
 
 
@@ -11,14 +12,15 @@ st.title("Zoom : les États les plus touchés")
 # Fonction pour charger les données, avec cache
 @st.cache_data
 def load_data():
-    df = pd.read_csv("/Users/mallou/Documents/Projet Data/Streamlit_fires/Streamlit/Datasets/dataset_v2.csv")
+    base_path = os.path.join(os.path.dirname(__file__), "Datasets")
+    df = pd.read_csv(os.path.join(base_path, "dataset_v2.csv"))
     return df
 
 # Charger les données
 df = load_data()
 
 #Introduction
-st.markdown("Ici nous allons nous concentrer sur les États les plus touchés en nombre et en superficie brûlées.")
+st.markdown("Ici, nous allons nous concentrer sur les États les plus touchés en nombre et en superficie brûlées.")
 
 #------------------------------------------------------------------------------------------------------
 #------------------------------------------------------------------------------------------------------
