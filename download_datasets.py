@@ -2,14 +2,11 @@ import os
 import gdown
 import pandas as pd
 
-BASE_DIR = os.path.join(os.path.dirname(__file__), "Datasets")
-
-df1 = pd.read_csv(os.path.join(BASE_DIR, "fires.csv"))
-df2 = pd.read_csv(os.path.join(BASE_DIR, "US_wildfire_weather_data.csv"))
-
+DATA_DIR = "Datasets"
+os.makedirs(DATA_DIR, exist_ok=True)
 
 datasets = {
-    "US_wildfire_weather_data.cvs": "1FfGg56InKnFMUcF8WFGQcFjWUMCB7dVY",
+    "US_wildfire_weather_data.csv": "1FfGg56InKnFMUcF8WFGQcFjWUMCB7dVY",
     "fires.csv": "1IhF1oK34yVs-gxsh8et8DsNHwOI5FZDc",
     "dataset_v2.csv": "1FXfZQpwLOX-3qoh0d2r1IiapZrr4y7NS"
 }
@@ -27,3 +24,8 @@ def download_all():
 
 if __name__ == "__main__":
     download_all()
+
+# Charger les datasets
+df1 = pd.read_csv(os.path.join(DATA_DIR, "fires.csv"))
+df2 = pd.read_csv(os.path.join(DATA_DIR, "US_wildfire_weather_data.csv"))
+df3 = pd.read_csv(os.path.join(DATA_DIR, "dataset_v2.csv"))
