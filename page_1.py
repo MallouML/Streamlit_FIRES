@@ -4,6 +4,9 @@ import missingno as msno
 import matplotlib.pyplot as plt 
 import plotly.express as px
 from utils import load_data
+import warnings
+
+warnings.simplefilter(action='ignore', category=pd.errors.DtypeWarning)
 
 
 df1 = load_data("US_wildfire_weather_data.csv", low_memory=False)
