@@ -14,6 +14,9 @@ def load_all():
     
 df1, df2, df3 = load_all()
 
+# Charger chaque CSV
+df1 = load_data("US_wildfire_weather_data.csv", low_memory=False)
+df2 = load_data("fires.csv", low_memory=False)
 
 
 # Exploration des données PAGE
