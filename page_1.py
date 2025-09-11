@@ -6,7 +6,7 @@ import plotly.express as px
 from utils import load_data
 
 
-df1, df2 = load_data()
+df1, df2, df = load_data()
 
 
 # Exploration des données PAGE
