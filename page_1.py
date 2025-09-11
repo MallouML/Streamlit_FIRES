@@ -3,43 +3,22 @@ import pandas as pd
 import missingno as msno
 import matplotlib.pyplot as plt 
 import plotly.express as px
-import download_datasets, download_all
 import os
-import gdown
 
 
-# Dossier des datasets
-DATA_DIR = "Datasets"
-os.makedirs(DATA_DIR, exist_ok=True)
 
-# Les datasets avec leurs liens Google Drive (id réel à remplacer)
-datasets = {
-    "fires.csv": "https://drive.google.com/uc?id=ID_FIRES",
-    "US_wildfire_weather_data.csv": "https://drive.google.com/uc?id=ID_WEATHER",
-    "dataset_v2.csv": "https://drive.google.com/uc?id=ID_V2"
-}
+#streamlit run streamlit_app.py
 
-# Télécharger les fichiers s'ils n'existent pas
-for filename, url in datasets.items():
-    filepath = os.path.join(DATA_DIR, filename)
-    if not os.path.exists(filepath):
-        st.write(f"Téléchargement de {filename}...")
-        gdown.download(url, filepath, quiet=False)
-        st.write(f"{filename} téléchargé !")
-    else:
-        st.write(f"{filename} existe déjà, skip.")
-
-# Fonction pour charger les CSV, avec cache
 @st.cache_data
 def load_data():
-    df_fires = pd.read_csv(os.path.join(DATA_DIR, "fires.csv"))
-    df_weather = pd.read_csv(os.path.join(DATA_DIR, "US_wildfire_weather_data.csv"))
-    df_v2 = pd.read_csv(os.path.join(DATA_DIR, "dataset_v2.csv"))
-    return df_fires, df_weather, df_v2
+    base_path = os.path.join(os.path.dirname(__file__), "Datasets")
+    df1 = pd.read_csv(os.path.join(base_path, "fires.csv"))
+    df2 = pd.read_csv(os.path.join(base_path, "US_wildfire_weather_data.cvs"))
+    return df1, df2
 
 # Charger les données
-df_fires, df_weather, df_v2 = load_data()
-st.write("Datasets chargés !")
+df1, df2 = load_data()
+
 
 # Exploration des données PAGE
 st.title("Présentation des données")
