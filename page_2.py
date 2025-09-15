@@ -10,15 +10,21 @@ import os
 # Visualisation des données PAGE
 st.title("Exploration des données")
 
-# Fonction pour charger les données, avec cache
 @st.cache_data
-def load_data():
+def load_data(filename: str):
+    """
+    Charge un dataset Parquet depuis le dossier Datasets et le met en cache.
+    """
     base_path = os.path.join(os.path.dirname(__file__), "Datasets")
-    df = pd.read_csv(os.path.join(base_path, "dataset_v2.csv"))
+    filepath = os.path.join(base_path, filename)
+    if not os.path.exists(filepath):
+        raise FileNotFoundError(f"{filepath} est introuvable.")
+    df = pd.read_parquet(filepath)
     return df
 
-# Charger les données
-df = load_data()
+# Exemple : charger les datasets échantillons
+df1 = load_data("dataset_total.parquet")
+
 
 #--------------------------------------------------------------
 #Introduction
