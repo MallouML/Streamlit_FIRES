@@ -8,7 +8,10 @@ import download_datasets
 # -------------------------------
 # Chargement du pipeline
 # -------------------------------
-pipeline = joblib.load("pipeline_model.pkl")
+MODEL_FILE = "pipeline_model.pkl"
+joblib.load(MODEL_FILE)
+pipeline = load_model()
+
 st.title("Prédiction de la classe d'un feu")
 
 # -------------------------------
