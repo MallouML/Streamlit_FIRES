@@ -4,6 +4,8 @@
 
 Fires USA est une application interactive développée avec **Streamlit** pour analyser et visualiser les données historiques des feux de forêt aux États-Unis.  
 
+Le projet a été travaillé sur 1,88 millions de données et pour des raisons techniques, l'application streamlit travaille avec un échantillon aléatoire de 100 000 données.
+
 Le projet inclut :
 - la **collecte des données**
   
