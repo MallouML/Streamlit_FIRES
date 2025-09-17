@@ -9,14 +9,20 @@ from PIL import Image
 # Visualisation des données PAGE
 st.title("Présentation du modèle de prédiction")
 
-# Fonction pour charger les données, avec cache
 @st.cache_data
-def load_data():
-    df = pd.read_csv("/Users/mallou/Documents/Projet Data/Feux_USA/Notebooks/Suppression categorieA/dataset_v2.csv")
+def load_data(filename: str):
+    """
+    Charge un dataset Parquet depuis le dossier Datasets et le met en cache.
+    """
+    base_path = os.path.join(os.path.dirname(__file__), "Datasets")
+    filepath = os.path.join(base_path, filename)
+    if not os.path.exists(filepath):
+        raise FileNotFoundError(f"{filepath} est introuvable.")
+    df = pd.read_parquet(filepath)
     return df
 
-# Charger les données
-df = load_data()
+# Charger les datasets échantillons
+df = load_data("dataset_total.parquet")
 
 #----------------------------------------------------
 #1er paragraphe
