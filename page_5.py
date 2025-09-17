@@ -5,14 +5,10 @@ import folium
 from streamlit_folium import st_folium
 import download_datasets
 
-#streamlit run streamlit_app.py
-
-
-
 # -------------------------------
 # Chargement du pipeline
 # -------------------------------
-pipeline = joblib.load("/Users/mallou/Documents/Projet Data/Streamlit_fires/Streamlit/pipeline_model.pkl")
+pipeline = joblib.load("pipeline_model.pkl")
 st.title("Prédiction de la classe d'un feu")
 
 # -------------------------------
