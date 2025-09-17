@@ -188,7 +188,7 @@ st.write("### Rapport de classification")
 st.write(df_report2)
 
 # Charger l'image depuis le disque
-image2 = Image.open("/Users/mallou/Documents/Projet Data/Feux_USA/PDF/output2.png")
+image2 = Image.open("Datasets/output2.png")
 
 # Afficher l'image
 st.write("### Importance des variables")
