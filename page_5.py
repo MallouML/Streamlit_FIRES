@@ -9,8 +9,7 @@ from streamlit_folium import st_folium
 # Chargement du pipeline
 # -------------------------------
 MODEL_FILE = "pipeline_model.pkl"
-joblib.load(MODEL_FILE)
-pipeline = load_model()
+pipeline = joblib.load(MODEL_FILE)
 
 st.title("Prédiction de la classe d'un feu")
 
