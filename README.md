@@ -55,6 +55,7 @@ Machine Learning (classification multiclasse)
 ## **Auteurs**
 
 Filopon Maëlle – Data Analyst / Marketing & Innovation
+
 GitHub : MallouML
 
 Yassine Rogui
