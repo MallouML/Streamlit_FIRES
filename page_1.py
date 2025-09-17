@@ -7,8 +7,8 @@ from utils import load_data
 
 
 # Charger les datasets échantillons
-df1 = load_data("fires_parquet.parquet", low_memory=False)
-df2 = load_data("weather_parquet.parquet", low_memory=False)
+df1 = load_data("fires_parquet.parquet")
+df2 = load_data("weather_parquet.parquet")
 
 
 # Exploration des données PAGE
