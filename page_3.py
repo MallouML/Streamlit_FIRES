@@ -21,8 +21,8 @@ def load_data(filename: str):
     df = pd.read_parquet(filepath)
     return df
 
-# Exemple : charger les datasets échantillons
-df1 = load_data("dataset_total.parquet")
+# Charger les datasets échantillons
+df = load_data("dataset_total.parquet")
 
 #Introduction
 st.markdown("Ici, nous allons nous concentrer sur les États les plus touchés en nombre et en superficie brûlées.")
